@@ -841,11 +841,11 @@
 
 
 
-        <!-- SKILLS / TECH STACK SECTION (Sci-Fi Dark Style) -->
-        <section id="skills" class="relative mb-20 md:mb-32 pt-16 pb-12 w-full">
+        <!-- SKILLS / TECH STACK SECTION -->
+        <section id="skills" class="relative mb-20 md:mb-32 pt-16 pb-12 w-[100vw] left-1/2 -translate-x-1/2">
             
-            <!-- Dark Tech Background Layer -->
-            <div class="absolute inset-0 bg-[#0a0a0a] pointer-events-none">
+            <!-- Tech Background Layer -->
+            <div class="absolute inset-0 bg-surface-dim dark:bg-[#0a0a0a] pointer-events-none transition-colors duration-300">
                 <!-- Constellation / Network faint background -->
                 <div class="absolute inset-0 opacity-[0.15]" style="background-image: radial-gradient(#d4ad8a 1px, transparent 1px); background-size: 80px 80px; background-position: 0 0;"></div>
             </div>
@@ -854,64 +854,64 @@
                 <div class="flex items-center gap-4 mb-16 scroll-reveal">
                     <span class="material-symbols-outlined text-[#d4ad8a] text-[32px] opacity-80"
                         data-icon="account_tree">account_tree</span>
-                    <h2 class="font-serif text-3xl md:text-[36px] text-white tracking-widest uppercase">Tech Stack</h2>
+                    <h2 class="font-serif text-3xl md:text-[36px] text-on-surface dark:text-white tracking-widest uppercase transition-colors duration-300">Tech Stack</h2>
                 </div>
 
-                <!-- Dark Bento Grid -->
+                <!-- Bento Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10 items-start">
                     
                     <!-- AI & GenAI Card -->
-                    <div class="bg-[#141414] border border-white/5 rounded-[2rem] p-8 md:p-10 hover:border-white/20 transition-all duration-500 group relative cursor-default">
+                    <div class="bg-surface dark:bg-[#141414] border border-outline-variant/30 dark:border-white/5 rounded-[2rem] p-8 md:p-10 hover:border-primary/40 dark:hover:border-white/20 transition-all duration-500 group relative cursor-default shadow-lg dark:shadow-none">
                         <div class="text-3xl mb-6 group-hover:-translate-y-1 transition-transform duration-500">🤖</div>
-                        <h3 class="font-serif text-xl md:text-2xl text-white tracking-wider uppercase leading-snug">AI & GENERATIVE AI</h3>
+                        <h3 class="font-serif text-xl md:text-2xl text-on-surface dark:text-white tracking-wider uppercase leading-snug transition-colors duration-300">AI & GENERATIVE AI</h3>
                         
                         <div class="flex flex-wrap gap-3 opacity-0 overflow-hidden translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 group-hover:mt-8 max-h-0 group-hover:max-h-[200px] transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]">
-                            <span class="px-4 py-1.5 rounded-full border border-white/10 text-white/60 font-label-mono text-[10px] tracking-widest uppercase">NLP</span>
-                            <span class="px-4 py-1.5 rounded-full border border-white/10 text-white/60 font-label-mono text-[10px] tracking-widest uppercase">LLMs</span>
-                            <span class="px-4 py-1.5 rounded-full border border-white/10 text-white/60 font-label-mono text-[10px] tracking-widest uppercase">RAG</span>
-                            <span class="px-4 py-1.5 rounded-full border border-white/10 text-white/60 font-label-mono text-[10px] tracking-widest uppercase">Embeddings</span>
-                            <span class="px-4 py-1.5 rounded-full border border-white/10 text-white/60 font-label-mono text-[10px] tracking-widest uppercase">LangChain</span>
-                            <span class="px-4 py-1.5 rounded-full border border-white/10 text-white/60 font-label-mono text-[10px] tracking-widest uppercase">LangGraph</span>
+                            <span class="px-4 py-1.5 rounded-full border border-outline-variant/50 dark:border-white/10 bg-surface-dim dark:bg-transparent text-on-surface-variant dark:text-white/60 font-label-mono text-[10px] tracking-widest uppercase transition-colors duration-300">NLP</span>
+                            <span class="px-4 py-1.5 rounded-full border border-outline-variant/50 dark:border-white/10 bg-surface-dim dark:bg-transparent text-on-surface-variant dark:text-white/60 font-label-mono text-[10px] tracking-widest uppercase transition-colors duration-300">LLMs</span>
+                            <span class="px-4 py-1.5 rounded-full border border-outline-variant/50 dark:border-white/10 bg-surface-dim dark:bg-transparent text-on-surface-variant dark:text-white/60 font-label-mono text-[10px] tracking-widest uppercase transition-colors duration-300">RAG</span>
+                            <span class="px-4 py-1.5 rounded-full border border-outline-variant/50 dark:border-white/10 bg-surface-dim dark:bg-transparent text-on-surface-variant dark:text-white/60 font-label-mono text-[10px] tracking-widest uppercase transition-colors duration-300">Embeddings</span>
+                            <span class="px-4 py-1.5 rounded-full border border-outline-variant/50 dark:border-white/10 bg-surface-dim dark:bg-transparent text-on-surface-variant dark:text-white/60 font-label-mono text-[10px] tracking-widest uppercase transition-colors duration-300">LangChain</span>
+                            <span class="px-4 py-1.5 rounded-full border border-outline-variant/50 dark:border-white/10 bg-surface-dim dark:bg-transparent text-on-surface-variant dark:text-white/60 font-label-mono text-[10px] tracking-widest uppercase transition-colors duration-300">LangGraph</span>
                         </div>
                     </div>
 
                     <!-- ML Card -->
-                    <div class="bg-[#141414] border border-white/5 rounded-[2rem] p-8 md:p-10 hover:border-white/20 transition-all duration-500 group relative cursor-default">
+                    <div class="bg-surface dark:bg-[#141414] border border-outline-variant/30 dark:border-white/5 rounded-[2rem] p-8 md:p-10 hover:border-primary/40 dark:hover:border-white/20 transition-all duration-500 group relative cursor-default shadow-lg dark:shadow-none">
                         <div class="text-3xl mb-6 group-hover:-translate-y-1 transition-transform duration-500">🧠</div>
-                        <h3 class="font-serif text-xl md:text-2xl text-white tracking-wider uppercase">MACHINE LEARNING</h3>
+                        <h3 class="font-serif text-xl md:text-2xl text-on-surface dark:text-white tracking-wider uppercase transition-colors duration-300">MACHINE LEARNING</h3>
                         
                         <div class="flex flex-wrap gap-3 opacity-0 overflow-hidden translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 group-hover:mt-8 max-h-0 group-hover:max-h-[200px] transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]">
-                            <span class="px-4 py-1.5 rounded-full border border-white/10 text-white/60 font-label-mono text-[10px] tracking-widest uppercase">Scikit-learn</span>
-                            <span class="px-4 py-1.5 rounded-full border border-white/10 text-white/60 font-label-mono text-[10px] tracking-widest uppercase">Classification</span>
-                            <span class="px-4 py-1.5 rounded-full border border-white/10 text-white/60 font-label-mono text-[10px] tracking-widest uppercase">Regression</span>
-                            <span class="px-4 py-1.5 rounded-full border border-white/10 text-white/60 font-label-mono text-[10px] tracking-widest uppercase">Feature Engineering</span>
-                            <span class="px-4 py-1.5 rounded-full border border-white/10 text-white/60 font-label-mono text-[10px] tracking-widest uppercase">Model Evaluation</span>
+                            <span class="px-4 py-1.5 rounded-full border border-outline-variant/50 dark:border-white/10 bg-surface-dim dark:bg-transparent text-on-surface-variant dark:text-white/60 font-label-mono text-[10px] tracking-widest uppercase transition-colors duration-300">Scikit-learn</span>
+                            <span class="px-4 py-1.5 rounded-full border border-outline-variant/50 dark:border-white/10 bg-surface-dim dark:bg-transparent text-on-surface-variant dark:text-white/60 font-label-mono text-[10px] tracking-widest uppercase transition-colors duration-300">Classification</span>
+                            <span class="px-4 py-1.5 rounded-full border border-outline-variant/50 dark:border-white/10 bg-surface-dim dark:bg-transparent text-on-surface-variant dark:text-white/60 font-label-mono text-[10px] tracking-widest uppercase transition-colors duration-300">Regression</span>
+                            <span class="px-4 py-1.5 rounded-full border border-outline-variant/50 dark:border-white/10 bg-surface-dim dark:bg-transparent text-on-surface-variant dark:text-white/60 font-label-mono text-[10px] tracking-widest uppercase transition-colors duration-300">Feature Engineering</span>
+                            <span class="px-4 py-1.5 rounded-full border border-outline-variant/50 dark:border-white/10 bg-surface-dim dark:bg-transparent text-on-surface-variant dark:text-white/60 font-label-mono text-[10px] tracking-widest uppercase transition-colors duration-300">Model Evaluation</span>
                         </div>
                     </div>
 
                     <!-- Programming & Data Card -->
-                    <div class="bg-[#141414] border border-white/5 rounded-[2rem] p-8 md:p-10 hover:border-white/20 transition-all duration-500 group relative cursor-default">
+                    <div class="bg-surface dark:bg-[#141414] border border-outline-variant/30 dark:border-white/5 rounded-[2rem] p-8 md:p-10 hover:border-primary/40 dark:hover:border-white/20 transition-all duration-500 group relative cursor-default shadow-lg dark:shadow-none">
                         <div class="text-3xl mb-6 group-hover:-translate-y-1 transition-transform duration-500">💻</div>
-                        <h3 class="font-serif text-xl md:text-2xl text-white tracking-wider uppercase">PROGRAMMING & DATA</h3>
+                        <h3 class="font-serif text-xl md:text-2xl text-on-surface dark:text-white tracking-wider uppercase transition-colors duration-300">PROGRAMMING & DATA</h3>
                         
                         <div class="flex flex-wrap gap-3 opacity-0 overflow-hidden translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 group-hover:mt-8 max-h-0 group-hover:max-h-[200px] transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]">
-                            <span class="px-4 py-1.5 rounded-full border border-white/10 text-white/60 font-label-mono text-[10px] tracking-widest uppercase">Python</span>
-                            <span class="px-4 py-1.5 rounded-full border border-white/10 text-white/60 font-label-mono text-[10px] tracking-widest uppercase">SQL</span>
-                            <span class="px-4 py-1.5 rounded-full border border-white/10 text-white/60 font-label-mono text-[10px] tracking-widest uppercase">Pandas</span>
-                            <span class="px-4 py-1.5 rounded-full border border-white/10 text-white/60 font-label-mono text-[10px] tracking-widest uppercase">NumPy</span>
+                            <span class="px-4 py-1.5 rounded-full border border-outline-variant/50 dark:border-white/10 bg-surface-dim dark:bg-transparent text-on-surface-variant dark:text-white/60 font-label-mono text-[10px] tracking-widest uppercase transition-colors duration-300">Python</span>
+                            <span class="px-4 py-1.5 rounded-full border border-outline-variant/50 dark:border-white/10 bg-surface-dim dark:bg-transparent text-on-surface-variant dark:text-white/60 font-label-mono text-[10px] tracking-widest uppercase transition-colors duration-300">SQL</span>
+                            <span class="px-4 py-1.5 rounded-full border border-outline-variant/50 dark:border-white/10 bg-surface-dim dark:bg-transparent text-on-surface-variant dark:text-white/60 font-label-mono text-[10px] tracking-widest uppercase transition-colors duration-300">Pandas</span>
+                            <span class="px-4 py-1.5 rounded-full border border-outline-variant/50 dark:border-white/10 bg-surface-dim dark:bg-transparent text-on-surface-variant dark:text-white/60 font-label-mono text-[10px] tracking-widest uppercase transition-colors duration-300">NumPy</span>
                         </div>
                     </div>
 
                     <!-- Tools Card -->
-                    <div class="bg-[#141414] border border-white/5 rounded-[2rem] p-8 md:p-10 hover:border-white/20 transition-all duration-500 group relative cursor-default">
+                    <div class="bg-surface dark:bg-[#141414] border border-outline-variant/30 dark:border-white/5 rounded-[2rem] p-8 md:p-10 hover:border-primary/40 dark:hover:border-white/20 transition-all duration-500 group relative cursor-default shadow-lg dark:shadow-none">
                         <div class="text-3xl mb-6 group-hover:-translate-y-1 transition-transform duration-500">🛠️</div>
-                        <h3 class="font-serif text-xl md:text-2xl text-white tracking-wider uppercase">TOOLS & DEPLOYMENT</h3>
+                        <h3 class="font-serif text-xl md:text-2xl text-on-surface dark:text-white tracking-wider uppercase transition-colors duration-300">TOOLS & DEPLOYMENT</h3>
                         
                         <div class="flex flex-wrap gap-3 opacity-0 overflow-hidden translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 group-hover:mt-8 max-h-0 group-hover:max-h-[200px] transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]">
-                            <span class="px-4 py-1.5 rounded-full border border-white/10 text-white/60 font-label-mono text-[10px] tracking-widest uppercase">Git</span>
-                            <span class="px-4 py-1.5 rounded-full border border-white/10 text-white/60 font-label-mono text-[10px] tracking-widest uppercase">GitHub</span>
-                            <span class="px-4 py-1.5 rounded-full border border-white/10 text-white/60 font-label-mono text-[10px] tracking-widest uppercase">Streamlit</span>
-                            <span class="px-4 py-1.5 rounded-full border border-white/10 text-white/60 font-label-mono text-[10px] tracking-widest uppercase">Docker</span>
+                            <span class="px-4 py-1.5 rounded-full border border-outline-variant/50 dark:border-white/10 bg-surface-dim dark:bg-transparent text-on-surface-variant dark:text-white/60 font-label-mono text-[10px] tracking-widest uppercase transition-colors duration-300">Git</span>
+                            <span class="px-4 py-1.5 rounded-full border border-outline-variant/50 dark:border-white/10 bg-surface-dim dark:bg-transparent text-on-surface-variant dark:text-white/60 font-label-mono text-[10px] tracking-widest uppercase transition-colors duration-300">GitHub</span>
+                            <span class="px-4 py-1.5 rounded-full border border-outline-variant/50 dark:border-white/10 bg-surface-dim dark:bg-transparent text-on-surface-variant dark:text-white/60 font-label-mono text-[10px] tracking-widest uppercase transition-colors duration-300">Streamlit</span>
+                            <span class="px-4 py-1.5 rounded-full border border-outline-variant/50 dark:border-white/10 bg-surface-dim dark:bg-transparent text-on-surface-variant dark:text-white/60 font-label-mono text-[10px] tracking-widest uppercase transition-colors duration-300">Docker</span>
                         </div>
                     </div>
 
