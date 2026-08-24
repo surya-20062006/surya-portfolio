@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>SURYA V | AI & Data Science</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+    <!-- Tailwind Config -->
+    <script>
+        // Check theme on load to prevent FOUC
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        background: 'rgb(var(--bg-color) / <alpha-value>)',
+                        surface: 'rgb(var(--surface-color) / <alpha-value>)',
+                        'surface-dim': 'rgb(var(--surface-dim) / <alpha-value>)',
+                        'on-surface': 'rgb(var(--on-surface) / <alpha-value>)',
+                        'on-surface-variant': 'rgb(var(--on-surface-variant) / <alpha-value>)',
+                        'outline-variant': 'rgb(var(--outline-variant) / <alpha-value>)',
+                        primary: 'rgb(var(--primary) / <alpha-value>)',
+                        'on-primary': 'rgb(var(--on-primary) / <alpha-value>)',
+                        secondary: 'rgb(var(--secondary) / <alpha-value>)',
+                        tertiary: 'rgb(var(--tertiary) / <alpha-value>)',
+                        'accent-lime': 'rgb(var(--accent-lime) / <alpha-value>)',
+                        'accent-violet': 'rgb(var(--accent-violet) / <alpha-value>)',
+                    },
+                    fontFamily: {
+                        'sans': ['"Inter"', 'sans-serif'],
+                        'serif': ['"Cinzel"', 'serif'],
+                        'display-lg': ['"Cinzel"', 'serif'],
+                        'headline-lg': ['"Cinzel"', 'serif'],
+                        'headline-md': ['"Cinzel"', 'serif'],
+                        'body-lg': ['"Inter"', 'sans-serif'],
+                        'label-caps': ['"Inter"', 'sans-serif'],
+                        'label-mono': ['"Inter"', 'sans-serif'],
+                    },
+                    spacing: {
+                        'margin-desktop': '80px',
+                        'margin-mobile': '24px',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --bg-color: 250 249 246; /* #FAF9F6 */
+            --surface-color: 255 255 255; /* #FFFFFF */
+            --surface-dim: 240 239 234; /* #F0EFEA */
+            --on-surface: 44 42 41; /* #2C2A29 */
+            --on-surface-variant: 99 96 94; /* #63605E */
+            --outline-variant: 229 226 220; /* #E5E2DC */
+            --primary: 200 107 77; /* #C86B4D */
+            --on-primary: 255 255 255; /* #FFFFFF */
+            --secondary: 115 140 122; /* #738C7A */
+            --tertiary: 106 125 143; /* #6A7D8F */
+            --accent-lime: 212 163 115; /* #D4A373 */
+            --accent-violet: 165 139 148; /* #A58B94 */
+        }
+
+        .dark {
+            --bg-color: 15 15 17; /* #0F0F11 */
+            --surface-color: 24 24 27; /* #18181B */
+            --surface-dim: 39 39 42; /* #27272A */
+            --on-surface: 244 244 245; /* #F4F4F5 */
+            --on-surface-variant: 161 161 170; /* #A1A1AA */
+            --outline-variant: 63 63 70; /* #3F3F46 */
+            --primary: 200 107 77; /* Kept same for branding */
+            --on-primary: 255 255 255;
+            --secondary: 139 168 148;
+            --tertiary: 128 150 170;
+            --accent-lime: 236 195 156;
+            --accent-violet: 198 174 182;
+        }
+
+        body {
+            background-color: rgb(var(--bg-color));
+            color: rgb(var(--on-surface));
+            overflow-x: clip;
+            min-height: 100vh;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .data-flow-line {
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, #fbabff, transparent);
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            opacity: 0.3;
+        }
+
+        .data-node {
+            width: 4px;
+            height: 4px;
+            background-color: #4cd7f6;
+            position: absolute;
+            left: 18.5px;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #4cd7f6;
+        }
+
+        .glow-text-primary {
+            text-shadow: 0 0 8px rgba(251, 171, 255, 0.4);
+        }
+
+        /* Hide scrollbar for process section */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Focus states for accessibility */
+        a:focus-visible,
+        button:focus-visible {
+            outline: 2px solid #fbabff;
+            outline-offset: 4px;
+        }
+
+        /* AI Visual CSS */
+        .ai-node {
+            position: absolute;
+            border-radius: 50%;
+            animation: pulse 3s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.8);
+                opacity: 0.6;
+            }
+
+            100% {
+                transform: scale(1.2);
+                opacity: 1;
+            }
+        }
+
+        @keyframes flow {
+            0% {
+                stroke-dashoffset: 24;
+            }
+
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        .flow-line {
+            stroke-dasharray: 4 8;
+            animation: flow 2s linear infinite;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes revealLine {
+            from {
+                opacity: 0;
+                clip-path: inset(0 100% 0 0);
+            }
+
+            to {
+                opacity: 1;
+                clip-path: inset(0 0 0 0);
+            }
+        }
+
+        @keyframes scan {
+            0% {
+                top: -10%;
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                top: 110%;
+                opacity: 0;
+            }
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .animate-fade-in-left {
+            animation: fadeInLeft 0.8s ease-out forwards;
+        }
+
+        .animate-reveal {
+            animation: revealLine 1s ease-out forwards;
+        }
+
+        .animate-scan {
+            animation: scan 3s linear infinite;
+        }
+
+        /* Scroll Reveal Animations */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(40px) scale(0.98);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .delay-100 {
+            transition-delay: 100ms;
+        }
+
+        .delay-200 {
+            transition-delay: 200ms;
+        }
+
+        .delay-300 {
+            transition-delay: 300ms;
+        }
+
+        .delay-400 {
+            transition-delay: 400ms;
+        }
+
+        .delay-500 {
+            transition-delay: 500ms;
+        }
+
+        .delay-600 {
+            transition-delay: 600ms;
+        }
+
+        .delay-700 {
+            transition-delay: 700ms;
+        }
+
+        .delay-800 {
+            transition-delay: 800ms;
+        }
+
+        .delay-900 {
+            transition-delay: 900ms;
+        }
+
+        .delay-1000 {
+            transition-delay: 1000ms;
+        }
+
+        .line-reveal {
+            transform-origin: left center;
+            transform: scaleX(0);
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .line-reveal.visible {
+            transform: scaleX(1);
+        }
+
+        .line-reveal-vertical {
+            transform-origin: top center;
+            transform: scaleY(0);
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .line-reveal-vertical.visible {
+            transform: scaleY(1);
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Preloader Animations */
+        @keyframes slideUpLoader {
+            from {
+                transform: translateY(100%);
+            }
+
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes expandLoader {
+            from {
+                transform: scaleX(0);
+            }
+
+            to {
+                transform: scaleX(1);
+            }
+        }
+
+        .animate-slide-up-loader {
+            animation: slideUpLoader 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .animate-expand-loader {
+            animation: expandLoader 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        #preloader {
+            transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        #preloader.slide-up {
+            transform: translateY(-100%);
+        }
+
+        /* Custom Cursor */
+        @media (hover: hover) and (pointer: fine) {
+            body { cursor: none; }
+            a, button, [role="button"], input, select, textarea { cursor: none; }
+        }
+        #custom-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #c47055;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background-color 0.2s, border-color 0.2s;
+            mix-blend-mode: difference;
+            display: none;
+        }
+        @media (hover: hover) and (pointer: fine) {
+            #custom-cursor { display: block; }
+        }
+        #custom-cursor.cursor-hover {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(196, 112, 85, 0.2);
+            border-color: transparent;
+        }
+
+        /* Terminal Modal */
+        #terminal-modal {
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .terminal-output {
+            scrollbar-width: thin;
+            scrollbar-color: #3f3f46 transparent;
+        }
+        .terminal-output::-webkit-scrollbar {
+            width: 6px;
+        }
+        .terminal-output::-webkit-scrollbar-thumb {
+            background-color: #3f3f46;
+            border-radius: 3px;
+        }
+        .terminal-input-wrapper::before {
+            content: ">";
+            color: #10b981; /* emerald-500 */
+            margin-right: 8px;
+        }
+        .terminal-input {
+            caret-color: #10b981;
+        }
+
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+
+<body class="relative">
+    <canvas id="neural-canvas" class="fixed inset-0 z-[-1] pointer-events-none w-full h-full opacity-60"></canvas>
+
+    <!-- PRELOADER -->
+    <div id="preloader" class="fixed inset-0 bg-surface-dim z-[100] flex items-center justify-center">
+        <div class="overflow-hidden flex flex-col items-center gap-3 relative px-4 text-center">
+            <h1
+                class="font-serif text-3xl md:text-5xl lg:text-6xl text-on-surface tracking-tight font-bold translate-y-[150%] animate-slide-up-loader delay-100">
+                INITIALIZING PORTFOLIO...</h1>
+            <div class="w-16 h-[3px] bg-[#c47055] scale-x-0 animate-expand-loader delay-300 mt-2"></div>
+        </div>
+    </div>
+
+    <!-- Header & Navigation -->
+    <header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant">
+        <div
+            class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-[1440px] mx-auto">
+            <a href="#hero"
+                class="font-display-lg text-headline-md md:text-2xl font-bold tracking-tighter text-on-surface uppercase focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded">
+                SURYA V
+            </a>
+
+            <!-- Desktop Nav -->
+            <nav class="hidden md:flex items-center gap-8 font-label-mono text-sm tracking-wider">
+                <a href="#hero"
+                    class="text-on-surface hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded px-2 py-1">HOME</a>
+                <a href="#about"
+                    class="text-on-surface-variant hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded px-2 py-1">ABOUT</a>
+                <a href="#projects"
+                    class="text-on-surface-variant hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded px-2 py-1">PROJECTS</a>
+                <a href="#skills"
+                    class="text-on-surface-variant hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded px-2 py-1">SKILLS</a>
+                <a href="#contact"
+                    class="text-on-surface-variant hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded px-2 py-1">CONTACT</a>
+                <button id="open-terminal-desktop" class="font-label-mono text-xs bg-surface-dim border border-outline-variant text-on-surface hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-full px-4 py-1.5 flex items-center gap-1">>_ TERMINAL</button>
+                <button class="theme-toggle text-on-surface-variant hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded p-1 flex items-center justify-center" aria-label="Toggle Dark Mode">
+                    <span class="material-symbols-outlined dark:hidden">dark_mode</span>
+                    <span class="material-symbols-outlined hidden dark:block">light_mode</span>
+                </button>
+            </nav>
+
+            <!-- Mobile Controls -->
+            <div class="flex items-center gap-2 md:hidden">
+                <button class="theme-toggle text-on-surface hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded p-1 flex items-center justify-center" aria-label="Toggle Dark Mode">
+                    <span class="material-symbols-outlined dark:hidden">dark_mode</span>
+                    <span class="material-symbols-outlined hidden dark:block">light_mode</span>
+                </button>
+                <button id="mobile-menu-btn"
+                    class="text-primary p-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
+                    aria-label="Open menu">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu"
+        class="fixed inset-0 bg-surface z-[60] hidden flex-col px-margin-mobile pt-24 pb-8 border-l border-outline-variant"
+        role="dialog" aria-modal="true">
+        <button id="close-menu-btn"
+            class="absolute top-4 right-margin-mobile text-primary p-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
+            aria-label="Close menu">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+
+        <div class="flex flex-col gap-6 font-label-mono text-body-lg text-on-surface">
+            <a href="#hero"
+                class="hover:text-primary transition-colors py-2 border-b border-outline-variant focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">>
+                ./HOME</a>
+            <a href="#about"
+                class="hover:text-primary transition-colors py-2 border-b border-outline-variant focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">>
+                ./ABOUT</a>
+            <a href="#projects"
+                class="hover:text-primary transition-colors py-2 border-b border-outline-variant focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">>
+                ./PROJECTS</a>
+            <a href="#skills"
+                class="hover:text-primary transition-colors py-2 border-b border-outline-variant focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">>
+                ./SKILLS</a>
+            <a href="#contact"
+                class="hover:text-primary transition-colors py-2 border-b border-outline-variant focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">>
+                ./CONTACT</a>
+            <button id="open-terminal-mobile"
+                class="text-center bg-surface-dim border border-outline-variant text-on-surface hover:text-primary transition-colors py-3 px-4 mt-4 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary font-label-mono">>_ TERMINAL</button>
+        </div>
+
+        <div class="mt-auto">
+            <span
+                class="font-label-caps text-label-caps bg-accent-lime/20 text-accent-lime px-2 py-1 rounded inline-flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-accent-lime animate-pulse"></span>
+                OPEN TO INTERNSHIPS
+            </span>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main
+        class="relative pt-20 md:pt-20 lg:pt-16 px-margin-mobile md:px-margin-desktop pb-0 max-w-[1440px] mx-auto overflow-hidden">
+
+        <!-- HERO SECTION -->
+        <!-- HERO SECTION -->
+        <!-- HERO SECTION (Premium Glass Split Layout) -->
+        <section id="hero" class="relative min-h-[100vh] flex items-center justify-center pt-24 pb-16 overflow-hidden max-w-7xl mx-auto w-full">
+            <!-- Background Ambient Glow -->
+            <div class="absolute inset-0 pointer-events-none">
+                <div class="absolute top-1/4 left-0 w-[500px] h-[500px] bg-[#d4ad8a]/10 rounded-full blur-[120px] mix-blend-screen"></div>
+                <div class="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-[#c47055]/5 rounded-full blur-[150px] mix-blend-screen"></div>
+            </div>
+
+            <div class="relative z-10 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center px-4 md:px-8 lg:px-12">
+                
+                <!-- Left: Typography & CTAs -->
+                <div class="lg:col-span-7 flex flex-col justify-center order-2 lg:order-1 pt-12 lg:pt-0">
+                    
+                    <!-- Main Name -->
+                    <h1 class="font-serif text-5xl md:text-7xl lg:text-[5.5rem] leading-[1.1] tracking-tight text-on-surface mb-12 opacity-0 animate-fade-in-up" style="animation-delay: 0.2s;">
+                        Surya <span class="text-[#d4ad8a] italic font-light">V.</span>
+                    </h1>
+                    
+                    <!-- CTAs -->
+                    <div class="flex flex-wrap items-center gap-6 opacity-0 animate-fade-in-up" style="animation-delay: 0.5s;">
+                        <a href="assets/SURYA_1PG_RESUME.pdf" target="_blank" rel="noopener noreferrer"
+                            class="group relative inline-flex items-center gap-3 px-8 py-4 border border-[#d4ad8a]/30 bg-[#d4ad8a]/10 hover:bg-[#d4ad8a] hover:border-[#d4ad8a] transition-all duration-500 rounded-full text-[#d4ad8a] hover:text-surface font-label-mono text-xs tracking-[0.15em] uppercase shadow-[0_0_20px_rgba(212,173,138,0.1)] hover:shadow-[0_0_30px_rgba(212,173,138,0.3)] backdrop-blur-md">
+                            <span class="font-bold">Download CV</span>
+                            <span class="material-symbols-outlined text-[18px] group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform duration-300">north_east</span>
+                        </a>
+                        
+                        <a href="#projects" class="group inline-flex items-center gap-2 font-label-mono text-xs text-on-surface-variant uppercase tracking-[0.15em] hover:text-[#c47055] transition-colors p-4">
+                            <span>View Projects</span>
+                            <span class="material-symbols-outlined text-[18px] group-hover:translate-x-2 transition-transform duration-300">arrow_forward</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right: Premium Glassmorphism Image Card -->
+                <div class="lg:col-span-5 relative order-1 lg:order-2 flex justify-center lg:justify-end opacity-0 animate-fade-in-up" style="animation-delay: 0.3s;">
+                    
+                    <div class="relative w-[280px] md:w-[380px] lg:w-[420px] aspect-[4/5] rounded-[2.5rem] bg-surface-dim/30 border border-outline-variant/30 backdrop-blur-2xl p-4 shadow-2xl group">
+                        
+                        <!-- Image Container -->
+                        <div class="w-full h-full rounded-[2rem] overflow-hidden relative border border-outline-variant/20">
+                            <img src="assets/profile.png" alt="Surya" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-1000 ease-[cubic-bezier(0.25,1,0.5,1)]">
+                            <!-- Subtle Gradient Overlay to ensure text readability if any -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-surface-dim via-transparent to-transparent opacity-60"></div>
+                        </div>
+
+                        <!-- Floating Glass Badge -->
+                        <div class="absolute -bottom-6 -left-6 md:-left-12 bg-surface-dim/70 backdrop-blur-xl border border-outline-variant/40 rounded-2xl p-4 flex items-center gap-4 shadow-[0_20px_40px_rgba(0,0,0,0.4)] animate-float">
+                            <div class="w-12 h-12 rounded-full bg-[#d4ad8a]/20 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-[#d4ad8a] text-[24px]">terminal</span>
+                            </div>
+                            <div>
+                                <p class="font-label-mono text-[10px] text-on-surface-variant uppercase tracking-widest mb-1">Status</p>
+                                <p class="font-body-lg text-sm font-medium text-on-surface">Building AI Models</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                
+            </div>
+        </section>
+
+        <!-- ABOUT SECTION -->
+        <section id="about" class="scroll-reveal relative mb-20 md:mb-32 pl-6 md:pl-12 pt-8 md:pt-16">
+            <div class="flex items-center gap-4 mb-12 relative">
+                <div class="absolute -left-2 top-1/2 w-8 h-[1px] bg-gradient-to-r from-transparent to-[#d4ad8a] -translate-y-1/2 hidden md:block"></div>
+                <span class="material-symbols-outlined text-[#d4ad8a] text-[28px] relative z-10" data-icon="terminal">terminal</span>
+                <h2 class="font-display-lg text-2xl md:text-3xl text-on-surface uppercase tracking-[0.2em] relative group cursor-default">
+                    ABOUT
+                    <span class="absolute -bottom-2 left-0 w-0 h-[2px] bg-[#d4ad8a] transition-all duration-300 group-hover:w-full"></span>
+                </h2>
+            </div>
+
+            <!-- Premium Glass Bento Box Style -->
+            <div class="relative w-full max-w-6xl mx-auto my-24">
+                
+                <!-- Background Ambient Glow -->
+                <div class="absolute inset-0 bg-[#d4ad8a]/5 blur-[120px] rounded-full pointer-events-none"></div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 relative z-10">
+                    
+                    <!-- Main Bio Card -->
+                    <div class="lg:col-span-8 bg-surface-dim/40 backdrop-blur-xl border border-outline-variant/30 rounded-[2rem] p-8 md:p-14 shadow-2xl hover:border-[#d4ad8a]/30 transition-colors duration-500 group overflow-hidden relative flex flex-col">
+                        <!-- Subtle corner highlight -->
+                        <div class="absolute -top-24 -right-24 w-64 h-64 bg-[#d4ad8a]/10 rounded-full blur-3xl group-hover:bg-[#d4ad8a]/20 transition-all duration-700 pointer-events-none"></div>
+
+                        <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-outline-variant/30 bg-surface/50 mb-10 w-fit">
+                            <span class="w-1.5 h-1.5 rounded-full bg-[#d4ad8a] animate-pulse"></span>
+                            <span class="font-label-mono text-[10px] tracking-widest uppercase text-on-surface-variant">Profile Overview</span>
+                        </div>
+                        
+                        <p class="font-serif text-3xl md:text-4xl lg:text-5xl text-on-surface leading-[1.3] font-light mb-8 relative z-10">
+                            Motivated B.Tech student specializing in <strong class="font-medium text-[#d4ad8a]">Artificial Intelligence & Data Science</strong>.
+                        </p>
+                        
+                        <p class="font-body-lg text-on-surface-variant text-lg md:text-xl leading-relaxed font-light mb-16 relative z-10">
+                            With knowledge of Python, Machine Learning, Scikit-learn, Pandas, NumPy, and MySQL. Passionate about building AI and ML applications and continuously learning modern technologies. Seeking an internship or entry-level opportunity to apply my skills, gain hands-on experience, and contribute to <span class="italic text-on-surface border-b border-[#d4ad8a]/30 pb-1 hover:border-[#d4ad8a] transition-colors cursor-default">real-world AI/ML solutions</span>.
+                        </p>
+
+                        <div class="flex items-center gap-4 mt-auto pt-8 border-t border-outline-variant/20 relative z-10">
+                            <span class="material-symbols-outlined text-on-surface-variant text-[20px]">school</span>
+                            <span class="font-label-mono text-[10px] md:text-xs tracking-wider uppercase text-on-surface-variant">Sri Shakthi Institute of Engineering and Technology</span>
+                        </div>
+                    </div>
+
+                    <!-- Skills Stack -->
+                    <div class="lg:col-span-4 flex flex-col gap-6">
+                        
+                        <!-- Skill Card 1 -->
+                        <div class="bg-surface-dim/40 backdrop-blur-xl border border-outline-variant/30 rounded-[2rem] p-8 shadow-xl hover:border-[#c47055]/40 transition-colors duration-500 flex-1 flex flex-col justify-center relative overflow-hidden group">
+                            <div class="absolute -bottom-16 -right-16 w-48 h-48 bg-[#c47055]/10 rounded-full blur-2xl group-hover:bg-[#c47055]/20 transition-all duration-700 pointer-events-none"></div>
+                            
+                            <h4 class="font-label-mono text-[10px] tracking-widest uppercase text-[#c47055] mb-4 relative z-10">Core Focus</h4>
+                            <h3 class="font-display-lg text-2xl text-on-surface mb-2 relative z-10">Machine Learning</h3>
+                            <p class="font-body-lg text-sm text-on-surface-variant leading-relaxed relative z-10">Scikit-learn, Predictive Modeling & Algorithms.</p>
+                        </div>
+
+                        <!-- Skill Card 2 -->
+                        <div class="bg-surface-dim/40 backdrop-blur-xl border border-outline-variant/30 rounded-[2rem] p-8 shadow-xl hover:border-[#d4ad8a]/40 transition-colors duration-500 flex-1 flex flex-col justify-center relative overflow-hidden group">
+                            <div class="absolute -bottom-16 -left-16 w-48 h-48 bg-[#d4ad8a]/10 rounded-full blur-2xl group-hover:bg-[#d4ad8a]/20 transition-all duration-700 pointer-events-none"></div>
+
+                            <h4 class="font-label-mono text-[10px] tracking-widest uppercase text-[#d4ad8a] mb-4 relative z-10">Analytics</h4>
+                            <h3 class="font-display-lg text-2xl text-on-surface mb-2 relative z-10">Data Science</h3>
+                            <p class="font-body-lg text-sm text-on-surface-variant leading-relaxed relative z-10">Pandas, NumPy, Deep Data Analytics.</p>
+                        </div>
+
+                        <!-- Skill Card 3 -->
+                        <div class="bg-surface-dim/40 backdrop-blur-xl border border-outline-variant/30 rounded-[2rem] p-8 shadow-xl hover:border-outline-variant/60 transition-colors duration-500 flex-1 flex flex-col justify-center relative z-10">
+                            <h4 class="font-label-mono text-[10px] tracking-widest uppercase text-on-surface-variant mb-4">Foundation</h4>
+                            <h3 class="font-display-lg text-2xl text-on-surface mb-2">Python & SQL</h3>
+                            <p class="font-body-lg text-sm text-on-surface-variant leading-relaxed">Backend logic, databases, and version control.</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROJECTS SECTION (Premium Glass) -->
+        <section id="projects" class="relative mb-20 md:mb-32 pt-16 max-w-7xl mx-auto px-4 md:px-8 lg:px-12">
+            
+            <div class="flex items-center gap-4 mb-16 scroll-reveal">
+                <span class="material-symbols-outlined text-[#d4ad8a] text-[28px]" data-icon="deployed_code">deployed_code</span>
+                <h2 class="font-display-lg text-3xl md:text-[40px] text-on-surface tracking-tight uppercase">Featured Projects</h2>
+            </div>
+
+            <div class="flex flex-col gap-12 md:gap-24">
+                
+                <!-- Project 01: TalentLens -->
+                <div class="scroll-reveal group relative">
+                    <!-- Background Ambient Glow on Hover -->
+                    <div class="absolute -inset-4 bg-[#c47055]/0 rounded-[3rem] blur-2xl transition-all duration-700 group-hover:bg-[#c47055]/10 pointer-events-none"></div>
+                    
+                    <div class="relative bg-surface-dim/40 backdrop-blur-xl border border-outline-variant/30 rounded-[2rem] md:rounded-[2.5rem] overflow-hidden flex flex-col lg:flex-row items-center transition-all duration-700 hover:border-[#c47055]/40 shadow-xl hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)]">
+                        
+                        <!-- Visual Area -->
+                        <div class="w-full lg:w-1/2 p-4 md:p-8">
+                            <div class="w-full aspect-[4/3] rounded-[1.5rem] md:rounded-[2rem] overflow-hidden relative border border-outline-variant/20 bg-surface/50 flex items-center justify-center">
+                                <img src="assets/talentlens.png" alt="TalentLens AI" class="w-full h-full object-cover transform scale-100 group-hover:scale-105 transition-transform duration-1000 ease-[cubic-bezier(0.25,1,0.5,1)]" />
+                                <div class="absolute inset-0 bg-gradient-to-t from-surface-dim/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                            </div>
+                        </div>
+
+                        <!-- Details -->
+                        <div class="w-full lg:w-1/2 p-8 md:p-12 lg:pl-4 flex flex-col justify-center">
+                            <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-outline-variant/30 bg-surface/50 mb-6 w-fit">
+                                <span class="font-label-mono text-[10px] tracking-widest uppercase text-on-surface-variant">01 / TalentLens</span>
+                            </div>
+                            
+                            <h3 class="font-serif text-3xl md:text-4xl lg:text-5xl text-on-surface font-light leading-tight mb-4 group-hover:text-[#c47055] transition-colors duration-500">
+                                AI Resume Analyzer
+                            </h3>
+                            
+                            <p class="font-body-lg text-on-surface-variant text-base md:text-lg leading-relaxed font-light mb-8 max-w-lg">
+                                An intelligent system that evaluates resumes against job descriptions, providing deep semantic matching and actionable insights using NLP.
+                            </p>
+
+                            <div class="flex flex-wrap gap-2 mb-10">
+                                <span class="px-4 py-1.5 rounded-full bg-surface-dim border border-outline-variant/50 text-on-surface-variant font-label-mono text-[10px] tracking-wider uppercase shadow-sm">Python</span>
+                                <span class="px-4 py-1.5 rounded-full bg-surface-dim border border-outline-variant/50 text-on-surface-variant font-label-mono text-[10px] tracking-wider uppercase shadow-sm">NLP</span>
+                                <span class="px-4 py-1.5 rounded-full bg-surface-dim border border-outline-variant/50 text-on-surface-variant font-label-mono text-[10px] tracking-wider uppercase shadow-sm">AI</span>
+                                <span class="px-4 py-1.5 rounded-full bg-surface-dim border border-outline-variant/50 text-on-surface-variant font-label-mono text-[10px] tracking-wider uppercase shadow-sm">Streamlit</span>
+                            </div>
+
+                            <div class="flex flex-wrap items-center gap-4 mt-auto">
+                                <a href="#" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-surface text-on-surface border border-outline-variant/50 hover:bg-surface-dim transition-colors duration-300 font-label-mono text-[11px] tracking-wider uppercase group/btn">
+                                    <span>Case Study</span>
+                                    <span class="material-symbols-outlined text-[16px] group-hover/btn:translate-x-1 transition-transform">article</span>
+                                </a>
+                                <a href="https://github.com/surya-20062006/talentlens-ai" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-transparent text-on-surface-variant hover:text-on-surface border border-transparent hover:border-outline-variant/50 transition-colors duration-300 font-label-mono text-[11px] tracking-wider uppercase group/btn">
+                                    <span>GitHub Code</span>
+                                    <span class="material-symbols-outlined text-[16px] group-hover/btn:translate-x-1 transition-transform">code</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 02: DocumentAI -->
+                <div class="scroll-reveal group relative">
+                    <!-- Background Ambient Glow on Hover -->
+                    <div class="absolute -inset-4 bg-[#d4ad8a]/0 rounded-[3rem] blur-2xl transition-all duration-700 group-hover:bg-[#d4ad8a]/10 pointer-events-none"></div>
+                    
+                    <div class="relative bg-surface-dim/40 backdrop-blur-xl border border-outline-variant/30 rounded-[2rem] md:rounded-[2.5rem] overflow-hidden flex flex-col lg:flex-row-reverse items-center transition-all duration-700 hover:border-[#d4ad8a]/40 shadow-xl hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)]">
+                        
+                        <!-- Visual Area -->
+                        <div class="w-full lg:w-1/2 p-4 md:p-8">
+                            <div class="w-full aspect-[4/3] rounded-[1.5rem] md:rounded-[2rem] overflow-hidden relative border border-outline-variant/20 bg-surface/50 flex items-center justify-center">
+                                <img src="assets/documentai.png" alt="DocumentAI" class="w-full h-full object-cover transform scale-100 group-hover:scale-105 transition-transform duration-1000 ease-[cubic-bezier(0.25,1,0.5,1)]" />
+                                <div class="absolute inset-0 bg-gradient-to-t from-surface-dim/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                            </div>
+                        </div>
+
+                        <!-- Details -->
+                        <div class="w-full lg:w-1/2 p-8 md:p-12 lg:pr-4 flex flex-col justify-center">
+                            <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-outline-variant/30 bg-surface/50 mb-6 w-fit">
+                                <span class="font-label-mono text-[10px] tracking-widest uppercase text-on-surface-variant">02 / DocumentAI</span>
+                            </div>
+                            
+                            <h3 class="font-serif text-3xl md:text-4xl lg:text-5xl text-on-surface font-light leading-tight mb-4 group-hover:text-[#d4ad8a] transition-colors duration-500">
+                                Intelligent Document RAG
+                            </h3>
+                            
+                            <p class="font-body-lg text-on-surface-variant text-base md:text-lg leading-relaxed font-light mb-8 max-w-lg">
+                                An intelligent document analysis system that utilizes semantic search and Retrieval-Augmented Generation to instantly answer questions from complex uploaded documents.
+                            </p>
+
+                            <div class="flex flex-wrap gap-2 mb-10">
+                                <span class="px-4 py-1.5 rounded-full bg-surface-dim border border-outline-variant/50 text-on-surface-variant font-label-mono text-[10px] tracking-wider uppercase shadow-sm">Python</span>
+                                <span class="px-4 py-1.5 rounded-full bg-surface-dim border border-outline-variant/50 text-on-surface-variant font-label-mono text-[10px] tracking-wider uppercase shadow-sm">RAG</span>
+                                <span class="px-4 py-1.5 rounded-full bg-surface-dim border border-outline-variant/50 text-on-surface-variant font-label-mono text-[10px] tracking-wider uppercase shadow-sm">LLM</span>
+                                <span class="px-4 py-1.5 rounded-full bg-surface-dim border border-outline-variant/50 text-on-surface-variant font-label-mono text-[10px] tracking-wider uppercase shadow-sm">Embeddings</span>
+                            </div>
+
+                            <div class="flex flex-wrap items-center gap-4 mt-auto">
+                                <a href="#" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-surface text-on-surface border border-outline-variant/50 hover:bg-surface-dim transition-colors duration-300 font-label-mono text-[11px] tracking-wider uppercase group/btn">
+                                    <span>Case Study</span>
+                                    <span class="material-symbols-outlined text-[16px] group-hover/btn:translate-x-1 transition-transform">article</span>
+                                </a>
+                                <a href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-transparent text-on-surface-variant hover:text-on-surface border border-transparent hover:border-outline-variant/50 transition-colors duration-300 font-label-mono text-[11px] tracking-wider uppercase group/btn">
+                                    <span>GitHub Code</span>
+                                    <span class="material-symbols-outlined text-[16px] group-hover/btn:translate-x-1 transition-transform">code</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 03: Job Email Agent -->
+                <div class="scroll-reveal group relative">
+                    <!-- Background Ambient Glow on Hover -->
+                    <div class="absolute -inset-4 bg-[#8a9bd4]/0 rounded-[3rem] blur-2xl transition-all duration-700 group-hover:bg-[#8a9bd4]/10 pointer-events-none"></div>
+                    
+                    <div class="relative bg-surface-dim/40 backdrop-blur-xl border border-outline-variant/30 rounded-[2rem] md:rounded-[2.5rem] overflow-hidden flex flex-col lg:flex-row items-center transition-all duration-700 hover:border-[#8a9bd4]/40 shadow-xl hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)]">
+                        
+                        <!-- Visual Area -->
+                        <div class="w-full lg:w-1/2 p-4 md:p-8">
+                            <div class="w-full aspect-[4/3] rounded-[1.5rem] md:rounded-[2rem] overflow-hidden relative border border-outline-variant/20 bg-surface/50 flex items-center justify-center">
+                                <img src="assets/email-agent.png" alt="Email Search Agent" class="w-full h-full object-cover transform scale-100 group-hover:scale-105 transition-transform duration-1000 ease-[cubic-bezier(0.25,1,0.5,1)]" />
+                                <div class="absolute inset-0 bg-gradient-to-t from-surface-dim/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                            </div>
+                        </div>
+
+                        <!-- Details -->
+                        <div class="w-full lg:w-1/2 p-8 md:p-12 lg:pl-4 flex flex-col justify-center">
+                            <div class="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-outline-variant/30 bg-surface/50 mb-6 w-fit">
+                                <span class="font-label-mono text-[10px] tracking-widest uppercase text-on-surface-variant">03 / Agentic AI</span>
+                            </div>
+                            
+                            <h3 class="font-serif text-3xl md:text-4xl lg:text-5xl text-on-surface font-light leading-tight mb-4 group-hover:text-[#8a9bd4] transition-colors duration-500">
+                                Job Email Daemon
+                            </h3>
+                            
+                            <p class="font-body-lg text-on-surface-variant text-base md:text-lg leading-relaxed font-light mb-8 max-w-lg">
+                                A lightweight, intelligent Python daemon that continuously monitors your Gmail inbox. Powered by blazing-fast Groq Cloud AI, it classifies incoming emails in real-time and instantly notifies you via WhatsApp.
+                            </p>
+
+                            <div class="flex flex-wrap gap-2 mb-10">
+                                <span class="px-4 py-1.5 rounded-full bg-surface-dim border border-outline-variant/50 text-on-surface-variant font-label-mono text-[10px] tracking-wider uppercase shadow-sm">Python</span>
+                                <span class="px-4 py-1.5 rounded-full bg-surface-dim border border-outline-variant/50 text-on-surface-variant font-label-mono text-[10px] tracking-wider uppercase shadow-sm">Groq Cloud</span>
+                                <span class="px-4 py-1.5 rounded-full bg-surface-dim border border-outline-variant/50 text-on-surface-variant font-label-mono text-[10px] tracking-wider uppercase shadow-sm">Twilio</span>
+                                <span class="px-4 py-1.5 rounded-full bg-surface-dim border border-outline-variant/50 text-on-surface-variant font-label-mono text-[10px] tracking-wider uppercase shadow-sm">Gmail API</span>
+                            </div>
+
+                            <div class="flex flex-wrap items-center gap-4 mt-auto">
+                                <a href="https://github.com/surya-20062006/email-alert-agent" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-surface text-on-surface border border-outline-variant/50 hover:bg-surface-dim transition-colors duration-300 font-label-mono text-[11px] tracking-wider uppercase group/btn">
+                                    <span>GitHub Code</span>
+                                    <span class="material-symbols-outlined text-[16px] group-hover/btn:translate-x-1 transition-transform">code</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+
+        <!-- SKILLS / TECH STACK SECTION (Sci-Fi Dark Style) -->
+        <section id="skills" class="relative mb-20 md:mb-32 pt-16 pb-12 w-full">
+            
+            <!-- Dark Tech Background Layer -->
+            <div class="absolute inset-0 bg-[#0a0a0a] pointer-events-none">
+                <!-- Constellation / Network faint background -->
+                <div class="absolute inset-0 opacity-[0.15]" style="background-image: radial-gradient(#d4ad8a 1px, transparent 1px); background-size: 80px 80px; background-position: 0 0;"></div>
+            </div>
+
+            <div class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="flex items-center gap-4 mb-16 scroll-reveal">
+                    <span class="material-symbols-outlined text-[#d4ad8a] text-[32px] opacity-80"
+                        data-icon="account_tree">account_tree</span>
+                    <h2 class="font-serif text-3xl md:text-[36px] text-white tracking-widest uppercase">Tech Stack</h2>
+                </div>
+
+                <!-- Dark Bento Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10 items-start">
+                    
+                    <!-- AI Card -->
+                    <div class="bg-[#141414] border border-white/5 rounded-[2rem] p-8 md:p-10 hover:border-white/20 transition-all duration-500 group relative cursor-default">
+                        <div class="text-3xl mb-6 group-hover:-translate-y-1 transition-transform duration-500">🤖</div>
+                        <h3 class="font-serif text-xl md:text-2xl text-white tracking-wider uppercase leading-snug">Artificial<br>Intelligence</h3>
+                        
+                        <div class="flex flex-wrap gap-3 opacity-0 overflow-hidden translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 group-hover:mt-8 max-h-0 group-hover:max-h-[200px] transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]">
+                            <span class="px-4 py-1.5 rounded-full border border-white/10 text-white/60 font-label-mono text-[10px] tracking-widest uppercase">NLP</span>
+                            <span class="px-4 py-1.5 rounded-full border border-white/10 text-white/60 font-label-mono text-[10px] tracking-widest uppercase">RAG</span>
+                            <span class="px-4 py-1.5 rounded-full border border-white/10 text-white/60 font-label-mono text-[10px] tracking-widest uppercase">Agentic AI</span>
+                            <span class="px-4 py-1.5 rounded-full border border-white/10 text-white/60 font-label-mono text-[10px] tracking-widest uppercase">LangChain</span>
+                        </div>
+                    </div>
+
+                    <!-- ML Card -->
+                    <div class="bg-[#141414] border border-white/5 rounded-[2rem] p-8 md:p-10 hover:border-white/20 transition-all duration-500 group relative cursor-default">
+                        <div class="text-3xl mb-6 group-hover:-translate-y-1 transition-transform duration-500">🧠</div>
+                        <h3 class="font-serif text-xl md:text-2xl text-white tracking-wider uppercase">Machine Learning</h3>
+                        
+                        <div class="flex flex-wrap gap-3 opacity-0 overflow-hidden translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 group-hover:mt-8 max-h-0 group-hover:max-h-[200px] transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]">
+                            <span class="px-4 py-1.5 rounded-full border border-white/10 text-white/60 font-label-mono text-[10px] tracking-widest uppercase">Scikit-learn</span>
+                            <span class="px-4 py-1.5 rounded-full border border-white/10 text-white/60 font-label-mono text-[10px] tracking-widest uppercase">Classification</span>
+                            <span class="px-4 py-1.5 rounded-full border border-white/10 text-white/60 font-label-mono text-[10px] tracking-widest uppercase">Regression</span>
+                            <span class="px-4 py-1.5 rounded-full border border-white/10 text-white/60 font-label-mono text-[10px] tracking-widest uppercase">Feature Eng.</span>
+                        </div>
+                    </div>
+
+                    <!-- Data Science Card -->
+                    <div class="bg-[#141414] border border-white/5 rounded-[2rem] p-8 md:p-10 hover:border-white/20 transition-all duration-500 group relative lg:col-span-1 md:col-span-2 cursor-default">
+                        <div class="text-3xl mb-6 group-hover:-translate-y-1 transition-transform duration-500">📊</div>
+                        <h3 class="font-serif text-xl md:text-2xl text-white tracking-wider uppercase">Data Science</h3>
+                        
+                        <div class="flex flex-wrap gap-3 opacity-0 overflow-hidden translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 group-hover:mt-8 max-h-0 group-hover:max-h-[200px] transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]">
+                            <span class="px-4 py-1.5 rounded-full border border-white/10 text-white/60 font-label-mono text-[10px] tracking-widest uppercase">Pandas</span>
+                            <span class="px-4 py-1.5 rounded-full border border-white/10 text-white/60 font-label-mono text-[10px] tracking-widest uppercase">NumPy</span>
+                            <span class="px-4 py-1.5 rounded-full border border-white/10 text-white/60 font-label-mono text-[10px] tracking-widest uppercase">Matplotlib</span>
+                            <span class="px-4 py-1.5 rounded-full border border-white/10 text-white/60 font-label-mono text-[10px] tracking-widest uppercase">Plotly</span>
+                        </div>
+                    </div>
+
+                    <!-- Programming Card -->
+                    <div class="bg-[#141414] border border-white/5 rounded-[2rem] p-8 md:p-10 hover:border-white/20 transition-all duration-500 group relative lg:col-span-1 cursor-default">
+                        <div class="text-3xl mb-6 group-hover:-translate-y-1 transition-transform duration-500">💻</div>
+                        <h3 class="font-serif text-xl md:text-2xl text-white tracking-wider uppercase">Programming</h3>
+                        
+                        <div class="flex flex-wrap gap-3 opacity-0 overflow-hidden translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 group-hover:mt-8 max-h-0 group-hover:max-h-[200px] transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]">
+                            <span class="px-4 py-1.5 rounded-full border border-white/10 text-white/60 font-label-mono text-[10px] tracking-widest uppercase">Python</span>
+                            <span class="px-4 py-1.5 rounded-full border border-white/10 text-white/60 font-label-mono text-[10px] tracking-widest uppercase">SQL</span>
+                        </div>
+                    </div>
+
+                    <!-- Tools Card -->
+                    <div class="bg-[#141414] border border-white/5 rounded-[2rem] p-8 md:p-10 hover:border-white/20 transition-all duration-500 group relative lg:col-span-2 md:col-span-1 cursor-default">
+                        <div class="text-3xl mb-6 group-hover:-translate-y-1 transition-transform duration-500">🛠️</div>
+                        <h3 class="font-serif text-xl md:text-2xl text-white tracking-wider uppercase">Development Tools</h3>
+                        
+                        <div class="flex flex-wrap gap-3 opacity-0 overflow-hidden translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 group-hover:mt-8 max-h-0 group-hover:max-h-[200px] transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)]">
+                            <span class="px-4 py-1.5 rounded-full border border-white/10 text-white/60 font-label-mono text-[10px] tracking-widest uppercase">Git & GitHub</span>
+                            <span class="px-4 py-1.5 rounded-full border border-white/10 text-white/60 font-label-mono text-[10px] tracking-widest uppercase">Streamlit</span>
+                            <span class="px-4 py-1.5 rounded-full border border-white/10 text-white/60 font-label-mono text-[10px] tracking-widest uppercase">VS Code</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT SECTION -->
+        <section id="contact" class="scroll-reveal relative mb-0 pt-16 pb-32 px-4 md:px-12 max-w-7xl mx-auto">
+            <div class="flex flex-col lg:flex-row gap-12 items-center bg-surface-dim/40 border border-outline-variant/30 p-8 md:p-16 rounded-[40px] shadow-lg backdrop-blur-md relative overflow-hidden">
+                
+                <!-- Subtle Background Glow -->
+                <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-[#c47055]/10 to-[#d4ad8a]/10 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/3 z-0"></div>
+
+                <!-- Left Text -->
+                <div class="lg:w-1/2 z-10 text-center lg:text-left">
+                    <h2 class="font-serif text-5xl md:text-6xl text-on-surface font-bold tracking-wider uppercase mb-6 drop-shadow-sm">
+                        Contact Me
+                    </h2>
+                    <div class="w-16 h-1 bg-[#c47055] mb-8 mx-auto lg:mx-0 opacity-80"></div>
+                    <p class="font-serif text-xl md:text-2xl text-on-surface-variant italic mb-8 max-w-md mx-auto lg:mx-0">
+                        “Let's turn data, AI and ideas into something useful.”
+                    </p>
+                </div>
+
+                <!-- Right Buttons / Cards -->
+                <div class="lg:w-1/2 w-full flex flex-col gap-5 z-10">
+                    <!-- Email -->
+                    <a href="mailto:suryavengadesh20@gmail.com" class="group flex items-center justify-between p-6 bg-surface/50 border border-outline-variant/50 hover:border-[#c47055] rounded-2xl transition-all duration-300 hover:shadow-[0_8px_30px_rgba(196,112,85,0.15)] hover:-translate-y-1">
+                        <div class="flex items-center gap-5">
+                            <div class="w-14 h-14 rounded-full bg-[#c47055]/10 flex items-center justify-center text-[#c47055] group-hover:bg-[#c47055] group-hover:text-white transition-colors">
+                                <span class="material-symbols-outlined text-[28px]">mail</span>
+                            </div>
+                            <span class="font-body-lg font-bold text-on-surface uppercase tracking-wider text-lg group-hover:text-white transition-colors">Email</span>
+                        </div>
+                        <span class="material-symbols-outlined text-on-surface-variant group-hover:text-[#c47055] transition-all opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 duration-300 text-[28px]">arrow_forward</span>
+                    </a>
+
+                    <!-- LinkedIn -->
+                    <a href="https://linkedin.com/in/suryav2006" target="_blank" rel="noopener noreferrer" class="group flex items-center justify-between p-6 bg-surface/50 border border-outline-variant/50 hover:border-[#d4ad8a] rounded-2xl transition-all duration-300 hover:shadow-[0_8px_30px_rgba(212,173,138,0.15)] hover:-translate-y-1">
+                        <div class="flex items-center gap-5">
+                            <div class="w-14 h-14 rounded-full bg-[#d4ad8a]/10 flex items-center justify-center text-[#d4ad8a] group-hover:bg-[#d4ad8a] group-hover:text-black transition-colors">
+                                <span class="material-symbols-outlined text-[28px]">open_in_new</span>
+                            </div>
+                            <span class="font-body-lg font-bold text-on-surface uppercase tracking-wider text-lg group-hover:text-white transition-colors">LinkedIn</span>
+                        </div>
+                        <span class="material-symbols-outlined text-on-surface-variant group-hover:text-[#d4ad8a] transition-all opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 duration-300 text-[28px]">arrow_forward</span>
+                    </a>
+
+                    <!-- GitHub -->
+                    <a href="https://github.com/surya-20062006" target="_blank" rel="noopener noreferrer" class="group flex items-center justify-between p-6 bg-surface/50 border border-outline-variant/50 hover:border-white rounded-2xl transition-all duration-300 hover:shadow-[0_8px_30px_rgba(255,255,255,0.1)] hover:-translate-y-1">
+                        <div class="flex items-center gap-5">
+                            <div class="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center text-white group-hover:bg-white group-hover:text-black transition-colors">
+                                <span class="material-symbols-outlined text-[28px]">code</span>
+                            </div>
+                            <span class="font-body-lg font-bold text-on-surface uppercase tracking-wider text-lg group-hover:text-white transition-colors">GitHub</span>
+                        </div>
+                        <span class="material-symbols-outlined text-on-surface-variant group-hover:text-white transition-all opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 duration-300 text-[28px]">arrow_forward</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer
+        class="w-full py-12 px-margin-mobile md:px-margin-desktop border-t border-outline-variant bg-background flex flex-col md:flex-row justify-center items-center gap-6 max-w-[1440px] mx-auto">
+        <div class="font-body-lg text-on-surface-variant text-sm">
+            © 2026 Surya V. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- Custom Cursor -->
+    <div id="custom-cursor"></div>
+
+    <!-- Terminal Modal -->
+    <div id="terminal-modal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm opacity-0 invisible" role="dialog" aria-modal="true">
+        <div class="bg-[#18181b] border border-[#3f3f46] rounded-lg shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col h-[60vh] max-h-[600px] m-4 relative transform transition-transform scale-95 duration-300">
+            <!-- Terminal Header -->
+            <div class="flex items-center justify-between px-4 py-2 bg-[#27272a] border-b border-[#3f3f46]">
+                <div class="flex gap-2">
+                    <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                </div>
+                <div class="text-[#a1a1aa] text-xs font-label-mono">surya-portfolio ~ terminal</div>
+                <button id="close-terminal-btn" class="text-[#a1a1aa] hover:text-white transition-colors">
+                    <span class="material-symbols-outlined text-[18px]">close</span>
+                </button>
+            </div>
+            <!-- Terminal Body -->
+            <div class="flex-1 p-4 font-label-mono text-sm flex flex-col gap-2 overflow-hidden bg-[#0f0f11]">
+                <div id="terminal-output" class="flex-1 overflow-y-auto flex flex-col gap-1 terminal-output text-[#d4d4d8] break-words whitespace-pre-wrap pb-2">
+                    <div class="text-[#10b981]">Welcome to Surya's interactive terminal v1.0.0</div>
+                    <div>Type <span class="text-yellow-400">'help'</span> to see a list of available commands.</div>
+                    <br>
+                </div>
+                <div class="flex items-center terminal-input-wrapper text-[#d4d4d8]">
+                    <input type="text" id="terminal-input" class="flex-1 bg-transparent border-none outline-none text-[#d4d4d8] terminal-input font-label-mono" autocomplete="off" spellcheck="false">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const closeBtn = document.getElementById('close-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        menuBtn.addEventListener('click', () => {
+            menu.classList.remove('hidden');
+            menu.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        });
+
+        closeBtn.addEventListener('click', () => {
+            menu.classList.add('hidden');
+            menu.classList.remove('flex');
+            document.body.style.overflow = '';
+        });
+
+        // Close menu on link click
+        const menuLinks = menu.querySelectorAll('a');
+        menuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.add('hidden');
+                menu.classList.remove('flex');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-reveal, .line-reveal, .line-reveal-vertical').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Theme Toggle Logic
+        document.querySelectorAll('.theme-toggle').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.documentElement.classList.toggle('dark');
+                const isDark = document.documentElement.classList.contains('dark');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            });
+        });
+
+        // Preloader Logic
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            if (preloader) {
+                // Wait for the intro animations to finish before sliding up
+                setTimeout(() => {
+                    preloader.classList.add('slide-up');
+                    // Remove from DOM after slide up transition
+                    setTimeout(() => preloader.remove(), 1000);
+                }, 1800);
+            }
+        });
+
+        // Custom Cursor Logic
+        const cursor = document.getElementById('custom-cursor');
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        
+        if (!isTouchDevice) {
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            });
+
+            const addHoverEffect = () => {
+                const hoverElements = document.querySelectorAll('a, button, input, textarea, select, .cursor-pointer, #terminal-modal');
+                hoverElements.forEach(el => {
+                    // avoid multiple event listeners
+                    el.removeEventListener('mouseenter', handleMouseEnter);
+                    el.removeEventListener('mouseleave', handleMouseLeave);
+                    el.addEventListener('mouseenter', handleMouseEnter);
+                    el.addEventListener('mouseleave', handleMouseLeave);
+                });
+            };
+
+            const handleMouseEnter = () => cursor.classList.add('cursor-hover');
+            const handleMouseLeave = () => cursor.classList.remove('cursor-hover');
+            
+            addHoverEffect();
+            // Re-apply if DOM changes
+            const domObserver = new MutationObserver(addHoverEffect);
+            domObserver.observe(document.body, { childList: true, subtree: true });
+        }
+
+        // Terminal Logic
+        const terminalModal = document.getElementById('terminal-modal');
+        const terminalOutput = document.getElementById('terminal-output');
+        const terminalInput = document.getElementById('terminal-input');
+        const openTerminalDesktopBtn = document.getElementById('open-terminal-desktop');
+        const openTerminalMobileBtn = document.getElementById('open-terminal-mobile');
+        const closeTerminalBtn = document.getElementById('close-terminal-btn');
+
+        const openTerminal = () => {
+            terminalModal.classList.remove('opacity-0', 'invisible');
+            terminalModal.firstElementChild.classList.remove('scale-95');
+            terminalModal.firstElementChild.classList.add('scale-100');
+            // Close mobile menu if open
+            menu.classList.add('hidden');
+            menu.classList.remove('flex');
+            document.body.style.overflow = 'hidden';
+            setTimeout(() => terminalInput.focus(), 100);
+        };
+
+        const closeTerminal = () => {
+            terminalModal.classList.add('opacity-0', 'invisible');
+            terminalModal.firstElementChild.classList.remove('scale-100');
+            terminalModal.firstElementChild.classList.add('scale-95');
+            document.body.style.overflow = '';
+        };
+
+        openTerminalDesktopBtn.addEventListener('click', openTerminal);
+        openTerminalMobileBtn.addEventListener('click', openTerminal);
+        closeTerminalBtn.addEventListener('click', closeTerminal);
+        
+        // Close terminal on clicking outside
+        terminalModal.addEventListener('click', (e) => {
+            if (e.target === terminalModal) closeTerminal();
+        });
+
+        const printToTerminal = (htmlContent) => {
+            const line = document.createElement('div');
+            line.innerHTML = htmlContent;
+            terminalOutput.appendChild(line);
+            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+        };
+
+        const processCommand = (cmd) => {
+            const normalizedCmd = cmd.trim().toLowerCase();
+            printToTerminal(`<div><span style="color:#10b981">></span> ${cmd}</div>`);
+            
+            if (normalizedCmd === '') return;
+
+            switch (normalizedCmd) {
+                case 'help':
+                    printToTerminal(`
+<div class="text-yellow-400">Available commands:</div>
+  <span class="text-[#c47055]">help</span>     - Show this help message
+  <span class="text-[#c47055]">whoami</span>   - About Surya
+  <span class="text-[#c47055]">projects</span> - List featured projects
+  <span class="text-[#c47055]">skills</span>   - List technical skills
+  <span class="text-[#c47055]">clear</span>    - Clear terminal output
+  <span class="text-[#c47055]">exit</span>     - Close the terminal
+                    `);
+                    break;
+                case 'whoami':
+                    printToTerminal(`
+I am <span class="font-bold text-white">SURYA V</span>, an AI & Data Science student.
+Specializing in building intelligent systems, machine learning models, and practical data-driven solutions.
+                    `);
+                    break;
+                case 'projects':
+                    printToTerminal(`
+<span class="text-yellow-400">Featured Projects:</span>
+1. <span class="font-bold text-white">TalentLens</span> - AI Resume Analyzer
+2. <span class="font-bold text-white">DocumentAI</span> - Intelligent Document Understanding & RAG
+3. <span class="font-bold text-white">Job Email Agent</span> - AI-Powered Inbox Daemon
+<span class="text-xs text-[#a1a1aa]">(Use the main website for more details)</span>
+                    `);
+                    break;
+                case 'skills':
+                    printToTerminal(`
+<span class="text-yellow-400">Technical Skills:</span>
+- <span class="text-[#c47055]">AI:</span> NLP, RAG, Agentic AI, LangChain
+- <span class="text-[#c47055]">ML:</span> Scikit-Learn, Classification/Regression, Feature Engineering
+- <span class="text-[#c47055]">Data:</span> Pandas, NumPy, Matplotlib, Plotly
+- <span class="text-[#c47055]">Dev:</span> Python, SQL, Git
+                    `);
+                    break;
+                case 'clear':
+                    terminalOutput.innerHTML = '';
+                    break;
+                case 'exit':
+                    closeTerminal();
+                    break;
+                default:
+                    printToTerminal(`<div class="text-red-400">Command not found: ${cmd}. Type 'help' for available commands.</div>`);
+            }
+        };
+
+        terminalInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const cmd = terminalInput.value;
+                terminalInput.value = '';
+                processCommand(cmd);
+            }
+        });
+
+
+
+        // --- Konami Code Logic ---
+        const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+        let konamiIndex = 0;
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === konamiCode[konamiIndex]) {
+                konamiIndex++;
+                if (konamiIndex === konamiCode.length) {
+                    // Trigger Confetti
+                    if (typeof confetti !== 'undefined') {
+                        confetti({
+                            particleCount: 200,
+                            spread: 100,
+                            origin: { y: 0.6 },
+                            zIndex: 10000
+                        });
+                    }
+                    konamiIndex = 0; // reset
+                }
+            } else {
+                konamiIndex = 0; // reset if wrong key
+            }
+        });
+
+        // --- Neural Network Canvas Background ---
+        const canvas = document.getElementById('neural-canvas');
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            const numParticles = 60;
+            let mouseX = window.innerWidth / 2;
+            let mouseY = window.innerHeight / 2;
+            let isPrefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            const resizeCanvas = () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            };
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.vx = (Math.random() - 0.5) * 1;
+                    this.vy = (Math.random() - 0.5) * 1;
+                    this.radius = Math.random() * 2 + 1;
+                }
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+
+                    if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                    if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = document.body.classList.contains('dark') || document.body.classList.contains('dev-mode') ? 'rgba(255, 255, 255, 0.5)' : 'rgba(200, 107, 77, 0.5)';
+                    ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < numParticles; i++) {
+                particles.push(new Particle());
+            }
+
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+
+            const animateCanvas = () => {
+                if (isPrefersReducedMotion) return;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                const isDark = document.body.classList.contains('dark') || document.body.classList.contains('dev-mode');
+                const lineColor = isDark ? '255, 255, 255' : '200, 107, 77';
+
+                particles.forEach(p => {
+                    p.update();
+                    p.draw();
+                });
+
+                // Connect particles
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+
+                        if (dist < 100) {
+                            ctx.beginPath();
+                            ctx.strokeStyle = `rgba(${lineColor}, ${1 - dist/100})`;
+                            ctx.lineWidth = 0.5;
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(particles[j].x, particles[j].y);
+                            ctx.stroke();
+                        }
+                    }
+                    
+                    // Connect to mouse
+                    if (!isTouchDevice) {
+                        const dxm = particles[i].x - mouseX;
+                        const dym = particles[i].y - mouseY;
+                        const distm = Math.sqrt(dxm * dxm + dym * dym);
+                        
+                        if (distm < 150) {
+                            ctx.beginPath();
+                            ctx.strokeStyle = `rgba(16, 185, 129, ${1 - distm/150})`; // Emerald green to mouse
+                            ctx.lineWidth = 1;
+                            ctx.moveTo(particles[i].x, particles[i].y);
+                            ctx.lineTo(mouseX, mouseY);
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(animateCanvas);
+            };
+            
+            // Start animation if not reduced motion
+            if (!isPrefersReducedMotion) {
+                animateCanvas();
+            }
+
+            // Handle reduced motion changes dynamically
+            window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', (e) => {
+                isPrefersReducedMotion = e.matches;
+                if (!isPrefersReducedMotion) animateCanvas();
+            });
+        }
+    </script>
+</body>
+
+</html>
